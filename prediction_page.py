@@ -12,18 +12,19 @@ import plotly.express as px
 #@st.cache_data
 
 # Import models
+@st.cache_resource
 def load_modelmax():
     with zipfile.ZipFile("model_maxtemp_dill_minimal.zip", "r") as zip_ref:
         with zip_ref.open("model_maxtemp_dill_minimal.dill", "r") as file:
             data = dill.load(file)
     return data
-
+@st.cache_resource
 def load_minmodel():
     with zipfile.ZipFile("model_mintemp_dill_minimal.zip", "r") as zip_ref:
         with zip_ref.open("model_mintemp_dill_minimal.dill", "r") as file:
             data = dill.load(file)
     return data
-
+@st.cache_resource
 def load_meanmodel():
     with zipfile.ZipFile("model_meantemp_dill_minimal.zip", "r") as zip_ref:
         with zip_ref.open("model_meantemp_dill_minimal.dill", "r") as file:
@@ -145,6 +146,7 @@ def show_predict_page():
                                      placeholder='Choose station in map or in list')
 
     # Creating function for making prediction
+    @st.cache_data
     def make_prediction(selected_station):
             station_name = prov_station['Station Name'].loc[prov_station['StationId'] == int(selected_station)].values[0]
             st.write('Start date, End date', min_date, max_date)
