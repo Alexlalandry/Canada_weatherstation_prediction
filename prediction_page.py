@@ -12,7 +12,6 @@ import plotly.express as px
 #@st.cache_data
 
 # Import models
-
 def load_modelmax():
     with zipfile.ZipFile("model_maxtemp_dill_minimal.zip", "r") as zip_ref:
         with zip_ref.open("model_maxtemp_dill_minimal.dill", "r") as file:
@@ -40,7 +39,17 @@ regressor_mean = data_mean["model"]
 
 encoder = data_max["encoder"]
 scaler = data_max["scaler"]
-columns = data_max['columns']
+
+categorical = ['Province','Season']
+ordinal = ['Month','Year','Day', 'Season_num']
+continuous = ['Longitude (x)','Latitude (y)','Elevation (m)']
+numerical = continuous+ordinal
+drop = ['Max Temp (°C)', 'Min Temp (°C)', 'Mean Temp (°C)','Total Precip (mm)', 'Station Name']
+columns = {'Categorical':categorical,
+                'Ordinal':ordinal, 
+                'Continuous':continuous,
+                'Numerical':numerical,
+                'drop':drop}
 
 # Function to map the season in the dataframe:
 def map_season_num(month):
@@ -81,8 +90,8 @@ def show_predict_page():
                'Min Temp (°C)',
                'Mean Temp (°C)']
     # Date limit from models training
-    ulti_min = date(2020,1,1)
-    ulti_max = date(2024,4,30)
+    ulti_min = date(2023,1,1)
+    ulti_max = date(2023,12,31)
    
     # Province selection for the map zoom
     selected_province = st.selectbox("Select a province", provinces)
