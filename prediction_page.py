@@ -14,20 +14,20 @@ import plotly.express as px
 # Import models
 
 def load_modelmax():
-    with zipfile.ZipFile("model_maxtemp_dill.zip", "r") as zip_ref:
-        with zip_ref.open("model_maxtemp_dill.dill", "r") as file:
+    with zipfile.ZipFile("model_maxtemp_dill_minimal.zip", "r") as zip_ref:
+        with zip_ref.open("model_maxtemp_dill_minimal.dill", "r") as file:
             data = dill.load(file)
     return data
 
 def load_minmodel():
-    with zipfile.ZipFile("model_mintemp_dill.zip", "r") as zip_ref:
-        with zip_ref.open("model_mintemp_dill.dill", "r") as file:
+    with zipfile.ZipFile("model_mintemp_dill_minimal.zip", "r") as zip_ref:
+        with zip_ref.open("model_mintemp_dill_minimal.dill", "r") as file:
             data = dill.load(file)
     return data
 
 def load_meanmodel():
-    with zipfile.ZipFile("model_meantemp_dill.zip", "r") as zip_ref:
-        with zip_ref.open("model_meantemp_dill.dill", "r") as file:
+    with zipfile.ZipFile("model_meantemp_dill_minimal.zip", "r") as zip_ref:
+        with zip_ref.open("model_meantemp_dill_minimal.dill", "r") as file:
             data = dill.load(file)
     return data
 
