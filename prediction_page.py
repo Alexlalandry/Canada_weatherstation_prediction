@@ -12,22 +12,22 @@ import plotly.express as px
 #@st.cache_data
 
 # Import models
-@st.cache_resource
+
 def load_modelmax():
-    with zipfile.ZipFile("model_maxtemp_dill_minimal.zip", "r") as zip_ref:
-        with zip_ref.open("model_maxtemp_dill_minimal.dill", "r") as file:
+    with zipfile.ZipFile("model_maxtemp_dill.zip", "r") as zip_ref:
+        with zip_ref.open("model_maxtemp_dill.dill", "r") as file:
             data = dill.load(file)
     return data
-@st.cache_resource
+
 def load_minmodel():
-    with zipfile.ZipFile("model_mintemp_dill_minimal.zip", "r") as zip_ref:
-        with zip_ref.open("model_mintemp_dill_minimal.dill", "r") as file:
+    with zipfile.ZipFile("model_mintemp_dill.zip", "r") as zip_ref:
+        with zip_ref.open("model_mintemp_dill.dill", "r") as file:
             data = dill.load(file)
     return data
-@st.cache_resource
+
 def load_meanmodel():
-    with zipfile.ZipFile("model_meantemp_dill_minimal.zip", "r") as zip_ref:
-        with zip_ref.open("model_meantemp_dill_minimal.dill", "r") as file:
+    with zipfile.ZipFile("model_meantemp_dill.zip", "r") as zip_ref:
+        with zip_ref.open("model_meantemp_dill.dill", "r") as file:
             data = dill.load(file)
     return data
 
@@ -40,17 +40,7 @@ regressor_mean = data_mean["model"]
 
 encoder = data_max["encoder"]
 scaler = data_max["scaler"]
-
-categorical = ['Province','Season']
-ordinal = ['Month','Year','Day', 'Season_num']
-continuous = ['Longitude (x)','Latitude (y)','Elevation (m)']
-numerical = continuous+ordinal
-drop = ['Max Temp (°C)', 'Min Temp (°C)', 'Mean Temp (°C)','Total Precip (mm)', 'Station Name']
-columns = {'Categorical':categorical,
-                'Ordinal':ordinal, 
-                'Continuous':continuous,
-                'Numerical':numerical,
-                'drop':drop}
+columns = data_max['columns']
 
 # Function to map the season in the dataframe:
 def map_season_num(month):
@@ -71,7 +61,7 @@ def show_predict_page():
     st.title('Weater stations in Canada, historical temperature predictions')
 
     st.write("""### Please select the province""")
-    station = pd.read_csv('Station_info.csv')
+    station = pd.read_csv('Station_info_all.csv')
 
     provinces = ('ALBERTA', 
                 'BRITISH COLUMBIA', 
@@ -91,8 +81,8 @@ def show_predict_page():
                'Min Temp (°C)',
                'Mean Temp (°C)']
     # Date limit from models training
-    ulti_min = date(2023,1,1)
-    ulti_max = date(2023,12,31)
+    ulti_min = date(2020,1,1)
+    ulti_max = date(2024,4,30)
    
     # Province selection for the map zoom
     selected_province = st.selectbox("Select a province", provinces)
@@ -128,15 +118,24 @@ def show_predict_page():
 
     # Creating the map
     st.header(f'Weather stations localisation for {selected_province}')
+    st.write('Red marker represent station with more than 30% missing values')
     map = folium.Map(location=province_center[selected_province], zoom_start=6)
 
     # Adding the stations coordinates on the map
     for i in range(len(prov_station)):
-        location = prov_station.iloc[i]['latitude'], prov_station.iloc[i]['longitude']
-        folium.Marker(location,
-                      popup=prov_station.iloc[i]['StationId'],
-                      tooltip=prov_station.iloc[i]['Station Name']).add_to(map)
-
+        # More than 30% missing values
+        if prov_station.iloc[i]['Status'] == False: 
+            location = prov_station.iloc[i]['latitude'], prov_station.iloc[i]['longitude']
+            folium.Marker(location,
+                        popup=prov_station.iloc[i]['StationId'],
+                        tooltip=('null %:',("%.2f" % prov_station.iloc[i]['Null pourcent'])),
+                        icon=folium.Icon(color='red', icon='')).add_to(map)
+        # Less than 30% missing values, station used to train the models
+        else:
+            location = prov_station.iloc[i]['latitude'], prov_station.iloc[i]['longitude']
+            folium.Marker(location,
+                        popup=prov_station.iloc[i]['StationId'],
+                        tooltip=('null %:',("%.2f" % prov_station.iloc[i]['Null pourcent']))).add_to(map)
     # Storing station selection made by the user
     output = st_folium(map, width=700, returned_objects=["last_object_clicked_popup"])
 
@@ -146,13 +145,13 @@ def show_predict_page():
                                      placeholder='Choose station in map or in list')
 
     # Creating function for making prediction
-    @st.cache_data
     def make_prediction(selected_station):
             station_name = prov_station['Station Name'].loc[prov_station['StationId'] == int(selected_station)].values[0]
             st.write('Start date, End date', min_date, max_date)
             longitude = prov_station['longitude'].loc[prov_station['StationId']==int(selected_station)].values[0]
             latitude = station['Latitude (y)'].loc[station['StationId']==int(selected_station)].values[0]
             elevation = station['Elevation (m)'].loc[station['StationId']==int(selected_station)].values[0]
+            name =  station['Station Name'].loc[station['StationId']==int(selected_station)].values[0]
            
             # Creating the dataset
             date_range = pd.date_range(start=min_date, end=max_date, freq='D').to_list()
@@ -160,6 +159,7 @@ def show_predict_page():
             data = pd.DataFrame(data={'Date':date_range})
             data['Province'] = selected_province
             data['StationId'] = selected_station
+            data['Station Name'] = name
             data['Longitude (x)'] = longitude
             data['Latitude (y)'] = latitude
             data['Year'] = pd.DatetimeIndex(data['Date']).year
