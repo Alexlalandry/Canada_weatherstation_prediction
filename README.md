@@ -25,9 +25,9 @@ Thank you to the Concordia Data Science Bootcamp teachers that have help me crea
 In particular to [Anupriya](https://github.com/Anupriya-Sri) and [Alaa](https://github.com/alaa-mohamedahmed).
 
 ## Content
-[requirements.txt](requirements.txt)  Environment set-up 
-[Wildfire_allstation_extract.ipynb](Wildfire_allstation_extract.ipynb)  Jupyter notebook for Weather data extraction
-[Wildfire_preprocess_model.ipynb](Wildfire_preprocess_model.ipynb)   Jupyter notebook for preprocessing the data and training the models
-[app.py](app.py)   To start the Streamlit app on your computer
-[prediction_page.py](prediction_page.py)  The function call by the streamlit app for the web interface
-[Station_info_all.csv](Station_info_all.csv)  Weather stations in Canada for the Streamlit map generation. Information needed for the model prediction
+- [requirements.txt](requirements.txt)  Environment set-up 
+- [Wildfire_allstation_extract.ipynb](Wildfire_allstation_extract.ipynb)  Jupyter notebook for Weather data extraction
+- [Wildfire_preprocess_model.ipynb](Wildfire_preprocess_model.ipynb)   Jupyter notebook for preprocessing the data and training the models
+- [app.py](app.py)   To start the Streamlit app on your computer
+- [prediction_page.py](prediction_page.py)  The function call by the streamlit app for the web interface
+- [Station_info_all.csv](Station_info_all.csv)  Weather stations in Canada for the Streamlit map generation. Information needed for the model prediction
