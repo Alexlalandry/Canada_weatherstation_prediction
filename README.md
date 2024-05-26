@@ -12,7 +12,7 @@ To make the predictions, I have trained three linear models using scikit-learn's
 
 
 ### Phase 2: Future steps
-I would like to add a model to predict the precipitation received. The current model for precipitation in the [Wildfire_preprocess_model](_Wildfire_preprocess_model.ipynb) has an R² score of 50%. This model is included in the notebook but has not been deployed.
+I would like to add a model to predict the precipitation received. The current model for precipitation in the [weather_preprocess_model](_weather_preprocess_model.ipynb) has an R² score of 50%. This model is included in the notebook but has not been deployed.
 I also aim to improve the weather temperature prediction by adding more features. Finding historical data on atmospheric pressure, air humidity, and wind could be valuable for predicting both precipitation and temperature.
 
 Finally, I would like to train another set of models using data from after 2020.
@@ -26,8 +26,8 @@ In particular to [Anupriya](https://github.com/Anupriya-Sri) and [Alaa](https://
 
 ## Content
 - [requirements.txt](requirements.txt)  Environment set-up 
-- [Wildfire_allstation_extract.ipynb](Wildfire_allstation_extract.ipynb)  Jupyter notebook for Weather data extraction
-- [Wildfire_preprocess_model.ipynb](Wildfire_preprocess_model.ipynb)   Jupyter notebook for preprocessing the data and training the models
+- [weather_allstation_extract.ipynb](weather_allstation_extract.ipynb)  Jupyter notebook for Weather data extraction
+- [weather_preprocess_model.ipynb](weather_preprocess_model.ipynb)   Jupyter notebook for preprocessing the data and training the models
 - [app.py](app.py)   To start the Streamlit app on your computer
 - [prediction_page.py](prediction_page.py)  The function call by the streamlit app for the web interface
 - [Station_info_all.csv](Station_info_all.csv)  Weather stations in Canada for the Streamlit map generation. Information needed for the model prediction
