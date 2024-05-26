@@ -18,15 +18,16 @@ I also aim to improve the weather temperature prediction by adding more features
 Finally, I would like to train another set of models using data from after 2020.
 
 ## Usage
-
 Run the Streamlit [app.py](app.py) file. Then select the province, desired date range, and weather station. You can select the station on the map or in the box list. The app will produce a dataset that you can download.
-
-## Contributing
-I am open to contribution on this project. You can open a branch and ask for a code review.
 
 ## Authors and acknowledgment
 Thank you to the Concordia Data Science Bootcamp teachers that have help me create this application.
 In particular to [Anupriya](https://github.com/Anupriya-Sri) and [Alaa](https://github.com/alaa-mohamedahmed).
 
-
-License
+## Content
+[requirements.txt](requirements.txt)  Environment set-up 
+[Wildfire_allstation_extract.ipynb](Wildfire_allstation_extract.ipynb)  Jupyter notebook for Weather data extraction
+[Wildfire_preprocess_model.ipynb](Wildfire_preprocess_model.ipynb)   Jupyter notebook for preprocessing the data and training the models
+[app.py](app.py)   To start the Streamlit app on your computer
+[prediction_page.py](prediction_page.py)  The function call by the streamlit app for the web interface
+[Station_info_all.csv](Station_info_all.csv)  Weather stations in Canada for the Streamlit map generation. Information needed for the model prediction
